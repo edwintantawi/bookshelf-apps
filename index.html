@@ -8,6 +8,25 @@
     <!-- tailwindcss cdn -->
     <!-- use cdn only for development -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,line-clamp"></script>
+    <style type="text/tailwindcss">
+      ::-webkit-scrollbar {
+        @apply w-1;
+      }
+
+      ::-webkit-scrollbar-track {
+        @apply bg-gray-100;
+      }
+
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        @apply bg-blue-400 rounded-full;
+      }
+
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        @apply bg-blue-600;
+      }
+    </style>
     <title>Bookshelf Apps</title>
   </head>
   <body class="">
@@ -22,8 +41,8 @@
       </header>
 
       <main class="pb-4 grid xl:grid-cols-3 gap-6">
-        <aside class="p-6 border border-1 rounded-md h-min">
-          <h2 class="text-xl font-bold text-blue-400 pb-4 border-b">
+        <aside class="px-6 pb-6 border border-1 rounded-md h-min">
+          <h2 class="text-xl font-bold text-blue-400 py-4 border-b">
             Add Book
           </h2>
           <form id="form:book" class="grid space-y-4 mt-4">
@@ -90,7 +109,7 @@
           class="border border-1 px-6 pb-6 overflow-auto xl:h-[calc(100vh-148px)] flex flex-col"
         >
           <h2
-            class="text-xl font-bold mb-4 pt-6 pb-3 text-blue-400 sticky top-0 bg-white"
+            class="text-xl font-bold py-4 mb-4 text-blue-400 sticky top-0 bg-white border-b"
           >
             In Complete books
           </h2>
@@ -102,7 +121,7 @@
           class="border border-1 px-6 pb-6 overflow-auto xl:h-[calc(100vh-148px)] flex flex-col"
         >
           <h2
-            class="text-xl font-bold mb-4 pt-6 pb-3 text-blue-400 sticky top-0 bg-white"
+            class="text-xl font-bold py-4 mb-4 text-blue-400 sticky top-0 bg-white border-b"
           >
             Complete books
           </h2>

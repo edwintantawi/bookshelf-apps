@@ -15,4 +15,8 @@ class BookRepository {
     books.push({ id, ...newBook });
     this._storage.insert(this._key, books);
   }
+
+  deleteOrUpdateBook(newBooks) {
+    this._storage.insert(this._key, newBooks);
+  }
 }
