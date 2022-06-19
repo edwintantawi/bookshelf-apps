@@ -13,6 +13,7 @@ const state = new Reactive(initialState, observer);
 const bookStorage = new LocalStorage({ key: BOOKS_STORAGE_KEY });
 
 const addBookFormElement = document.getElementById('form:book');
+const searchBookFormElement = document.getElementById('form:search');
 const deleteDialogElement = document.getElementById('dialog:delete-alert');
 
 // event listener for delete book
@@ -78,6 +79,30 @@ addBookFormElement.addEventListener('submit', (event) => {
   bookStorage.insert(state.data.books);
 });
 
+// search book
+searchBookFormElement.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const term = formData.get('term');
+
+  const oldBooks = state.data.books;
+  
+  const newBooks = oldBooks.map((book) => {
+    const constrains = Object.values(book);
+    const isMatch = constrains.some((constrain) => {
+      if (term === '') return true;
+      if (!['string', 'number'].includes(typeof constrain)) return false;
+      return constrain.toString().toLowerCase().includes(term.toLowerCase());
+    });
+
+    if (isMatch) return { ...book, isHide: false };
+    return { ...book, isHide: true };
+  });
+
+  state.data.books = newBooks;
+});
+
 // render books to DOM
 document.addEventListener(RENDER_BOOKS_EVENT, () => {
   const incompleteListElement = document.getElementById('book-list:incomplete');
@@ -87,6 +112,8 @@ document.addEventListener(RENDER_BOOKS_EVENT, () => {
   completeListElement.innerHTML = '';
 
   for (const book of state.data.books) {
+    if (book.isHide) continue;
+
     const bookElement = createBookTemplate(book, {
       onDelete: handleDeleteBook,
       onChange: handleChangeBookStatus,
