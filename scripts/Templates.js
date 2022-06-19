@@ -1,4 +1,7 @@
-function createBookTemplate({ id, title, author, year, isComplete }) {
+const createBookTemplate = (
+  { id, title, author, year, isComplete },
+  { onDelete, onChange }
+) => {
   const buttonBaseClass = [
     'text-white',
     'py-1',
@@ -6,28 +9,6 @@ function createBookTemplate({ id, title, author, year, isComplete }) {
     'rounded-md',
     'font-bold',
   ];
-
-  const handleDeleteBook = () => {
-    document.dispatchEvent(
-      new CustomEvent(DELETE_BOOK_EVENT, { detail: { id } })
-    );
-  };
-
-  const handleCompleteBook = () => {
-    document.dispatchEvent(
-      new CustomEvent(PUT_COMPLETE_BOOK_EVENT, {
-        detail: { id, isComplete: true },
-      })
-    );
-  };
-
-  const handleInCompleteBook = () => {
-    document.dispatchEvent(
-      new CustomEvent(PUT_COMPLETE_BOOK_EVENT, {
-        detail: { id, isComplete: false },
-      })
-    );
-  };
 
   const list = document.createElement('li');
 
@@ -38,8 +19,7 @@ function createBookTemplate({ id, title, author, year, isComplete }) {
     'px-5',
     'py-3',
     'rounded-md',
-    'hover:border-blue-400',
-    'mb-2',
+    'hover:border-gray-400/60',
     'text-gray-600'
   );
 
@@ -71,36 +51,36 @@ function createBookTemplate({ id, title, author, year, isComplete }) {
     'hover:bg-red-600/75'
   );
   deleteButton.innerText = 'Delete';
-  // deleteButton.setAttribute('value', id);
-  deleteButton.addEventListener('click', handleDeleteBook);
+  deleteButton.setAttribute('value', id);
+  deleteButton.addEventListener('click', onDelete);
 
-  const completeButton = document.createElement('button');
-  completeButton.classList.add(
-    ...buttonBaseClass,
-    'bg-green-600',
-    'hover:bg-green-600/75'
-  );
-  completeButton.innerText = 'Complete';
-  // completeButton.setAttribute('value', id);
-  completeButton.addEventListener('click', handleCompleteBook);
+  const changeStatusButton = document.createElement('button');
+  changeStatusButton.setAttribute('value', id);
+  changeStatusButton.addEventListener('click', onChange);
 
-  const inCompleteButton = document.createElement('button');
-  inCompleteButton.classList.add(
-    ...buttonBaseClass,
-    'bg-orange-600',
-    'hover:bg-orange-600/75'
-  );
-  inCompleteButton.innerText = 'In Complete';
-  // inCompleteButton.setAttribute('value', id);
-  inCompleteButton.addEventListener('click', handleInCompleteBook);
+  if (isComplete) {
+    changeStatusButton.classList.add(
+      ...buttonBaseClass,
+      'bg-orange-600',
+      'hover:bg-orange-600/75'
+    );
+    changeStatusButton.innerText = 'In Complete';
+  } else {
+    changeStatusButton.classList.add(
+      ...buttonBaseClass,
+      'bg-green-600',
+      'hover:bg-green-600/75'
+    );
+    changeStatusButton.innerText = 'Complete';
+  }
 
-  footer.append(deleteButton, isComplete ? inCompleteButton : completeButton);
+  footer.append(deleteButton, changeStatusButton);
   article.append(articleHeading, articleAuthor, articleTime, footer);
   list.appendChild(article);
   return list;
-}
+};
 
-function createEmptyBookTemplate() {
+const createEmptyBookTemplate = () => {
   const list = document.createElement('li');
   list.classList.add('flex', 'flex-1');
 
@@ -132,4 +112,4 @@ function createEmptyBookTemplate() {
   list.append(article);
 
   return list;
-}
+};

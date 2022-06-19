@@ -7,7 +7,7 @@
 
     <!-- tailwindcss cdn -->
     <!-- use cdn only for development -->
-    <script src="https://cdn.tailwindcss.com?plugins=forms,line-clamp"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
     <style type="text/tailwindcss">
       ::-webkit-scrollbar {
         @apply w-1;
@@ -19,30 +19,56 @@
 
       /* Handle */
       ::-webkit-scrollbar-thumb {
-        @apply bg-blue-400 rounded-full;
+        @apply bg-gray-300 rounded-full;
       }
 
       /* Handle on hover */
       ::-webkit-scrollbar-thumb:hover {
-        @apply bg-blue-600;
+        @apply bg-gray-400;
       }
     </style>
     <title>Bookshelf Apps</title>
   </head>
-  <body class="">
-    <div
-      class="xl:h-screen overflow-hidden container mx-auto px-2 flex flex-col"
+  <body>
+    <dialog
+      id="dialog:delete-alert"
+      class="w-full h-full p-0 z-50 bg-transparent"
     >
-      <header class="h-32 flex flex-col justify-center">
+      <div class="bg-black/40 h-full w-full grid place-items-center">
+        <section class="bg-white p-8 rounded-lg max-w-[440px] m-4">
+          <h2 class="font-bold text-xl mb-2">
+            Are you sure to delete this book?
+          </h2>
+          <p class="text-gray-500">
+            Deleted books cannot be returned, make sure you are sure before
+            delete.
+          </p>
+          <footer class="mt-6 flex justify-end gap-2">
+            <button class="py-2 px-6 rounded-md hover:bg-gray-100" id="decline">
+              No, Cancel
+            </button>
+            <button
+              id="accept"
+              class="py-2 px-6 rounded-md bg-red-500 hover:bg-red-500/80 text-white font-bold"
+            >
+              Yes, Delete
+            </button>
+          </footer>
+        </section>
+      </div>
+    </dialog>
+
+    <div class="xl:h-screen container mx-auto px-2 flex flex-col">
+      <header class="py-8 xl:py-0 xl:h-full flex flex-col justify-center">
         <h1 class="text-2xl font-bold">Bookshelf Apps</h1>
         <p class="mt-2 text-lg text-gray-600">
           manage your book list easily and structured
         </p>
       </header>
 
-      <main class="pb-4 grid xl:grid-cols-3 gap-6">
-        <aside class="px-6 pb-6 border border-1 rounded-md h-min">
-          <h2 class="text-xl font-bold text-blue-400 py-4 border-b">
+      <main class="pb-8 grid xl:grid-cols-[400px,1fr,1fr] gap-6">
+        <aside class="px-6 pb-6 border border-1 rounded-md h-min shadow-lg">
+          <h2 class="text-xl font-bold text-blue-500 py-4 border-b">
             Add Book
           </h2>
           <form id="form:book" class="grid space-y-4 mt-4">
@@ -98,7 +124,7 @@
 
             <button
               type="submit"
-              class="bg-blue-400 px-2 py-3 text-white font-bold rounded-md"
+              class="bg-blue-500 px-2 py-3 text-white font-bold rounded-md"
             >
               + Add Book
             </button>
@@ -106,36 +132,36 @@
         </aside>
 
         <section
-          class="border border-1 px-6 pb-6 overflow-auto xl:h-[calc(100vh-148px)] flex flex-col"
+          class="border shadow-lg rounded-md px-6 pb-6 overflow-auto xl:h-[calc(100vh-148px)] flex flex-col"
         >
           <h2
-            class="text-xl font-bold py-4 mb-4 text-blue-400 sticky top-0 bg-white border-b"
+            class="text-xl font-bold py-4 mb-4 text-blue-500 sticky top-0 bg-white border-b"
           >
             In Complete books
           </h2>
 
-          <ul id="book-list:incomplete" class="flex-1 flex flex-col"></ul>
+          <ul id="book-list:incomplete" class="flex-1 flex flex-col gap-3"></ul>
         </section>
 
         <section
-          class="border border-1 px-6 pb-6 overflow-auto xl:h-[calc(100vh-148px)] flex flex-col"
+          class="border shadow-lg rounded-md px-6 pb-6 overflow-auto xl:h-[calc(100vh-148px)] flex flex-col"
         >
           <h2
-            class="text-xl font-bold py-4 mb-4 text-blue-400 sticky top-0 bg-white border-b"
+            class="text-xl font-bold py-4 mb-4 text-blue-500 sticky top-0 bg-white border-b"
           >
             Complete books
           </h2>
 
-          <ul id="book-list:complete" class="flex-1 flex flex-col"></ul>
+          <ul id="book-list:complete" class="flex-1 flex flex-col gap-3"></ul>
         </section>
       </main>
     </div>
 
-    <script src="scripts/viewTemplates.js"></script>
-    <script src="scripts/BookModel.js"></script>
+    <script src="scripts/Reactive.js"></script>
+    <script src="scripts/Observer.js"></script>
+    <script src="scripts/Templates.js"></script>
     <script src="scripts/LocalStorage.js"></script>
-    <script src="scripts/BookRepository.js"></script>
-    <script src="scripts/BookController.js"></script>
+    <script src="scripts/Book.js"></script>
     <script src="scripts/index.js"></script>
   </body>
 </html>
