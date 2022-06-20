@@ -31,8 +31,8 @@
   </head>
   <body>
     <dialog
-      id="dialog:delete-alert"
-      class="w-full h-full p-0 z-50 bg-transparent"
+      id="dialog:alert"
+      class="w-full h-full p-0 z-50 bg-transparent fixed"
     >
       <div class="bg-black/40 h-full w-full grid place-items-center">
         <section class="bg-white p-8 rounded-lg max-w-[440px] m-4">
@@ -44,11 +44,14 @@
             delete.
           </p>
           <footer class="mt-6 flex justify-end gap-2">
-            <button class="py-2 px-6 rounded-md hover:bg-gray-100" id="decline">
+            <button
+              id="dialog:alert:decline"
+              class="py-2 px-6 rounded-md hover:bg-gray-100"
+            >
               No, Cancel
             </button>
             <button
-              id="accept"
+              id="dialog:alert:accept"
               class="py-2 px-6 rounded-md bg-red-500 hover:bg-red-500/80 text-white font-bold"
             >
               Yes, Delete
@@ -198,7 +201,7 @@
 
     <script src="scripts/Reactive.js"></script>
     <script src="scripts/Observer.js"></script>
-    <script src="scripts/Templates.js"></script>
+    <script src="scripts/htmlTemplates.js"></script>
     <script src="scripts/LocalStorage.js"></script>
     <script src="scripts/Book.js"></script>
     <script src="scripts/index.js"></script>

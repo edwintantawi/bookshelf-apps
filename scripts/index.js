@@ -1,6 +1,7 @@
 const RENDER_BOOKS_EVENT = 'render-books';
 const BOOKS_STORAGE_KEY = 'books';
 
+// do rerender when state change with observer
 const bookRenderEvent = () => {
   document.dispatchEvent(new Event(RENDER_BOOKS_EVENT));
 };
@@ -14,30 +15,35 @@ const bookStorage = new LocalStorage({ key: BOOKS_STORAGE_KEY });
 
 const addBookFormElement = document.getElementById('form:book');
 const searchBookFormElement = document.getElementById('form:search');
-const deleteDialogElement = document.getElementById('dialog:delete-alert');
+
+const dialogElement = document.getElementById('dialog:alert');
+const acceptButton = document.getElementById('dialog:alert:accept');
+const declineButton = document.getElementById('dialog:alert:decline');
+
+// delete book when user accept from alert dialog
+acceptButton.addEventListener('click', (event) => {
+  const id = event.target.value;
+  const oldBooks = state.data.books;
+  const newBooks = oldBooks
+    .filter((book) => book.id !== Number(id))
+    .map((book) => new Book(book));
+
+  console.log({ oldBooks, newBooks });
+
+  bookStorage.insert(newBooks);
+  state.data.books = newBooks;
+
+  dialogElement.close();
+});
+
+declineButton.addEventListener('click', () => {
+  dialogElement.close();
+});
 
 // event listener for delete book
 const handleDeleteBook = (event) => {
-  const id = event.target.value;
-
-  deleteDialogElement.setAttribute('open', 'true');
-
-  const declineButton = deleteDialogElement.querySelector('#decline');
-  const acceptButton = deleteDialogElement.querySelector('#accept');
-
-  declineButton.addEventListener('click', () =>
-    deleteDialogElement.removeAttribute('open')
-  );
-
-  acceptButton.addEventListener('click', () => {
-    const oldBooks = state.data.books;
-    const newBooks = oldBooks.filter((book) => book.id !== Number(id));
-
-    bookStorage.insert(newBooks);
-    state.data.books = newBooks;
-
-    deleteDialogElement.removeAttribute('open');
-  });
+  acceptButton.setAttribute('value', event.target.value);
+  dialogElement.show();
 };
 
 // event listener for toggle book status
@@ -47,9 +53,9 @@ const handleChangeBookStatus = (event) => {
   const oldBooks = state.data.books;
   const newBooks = oldBooks.map((book) => {
     if (book.id === Number(id)) {
-      return { ...book, isComplete: !book.isComplete };
+      return new Book({ ...book, isComplete: !book.isComplete });
     }
-    return book;
+    return new Book(book);
   });
 
   bookStorage.insert(newBooks);
@@ -77,6 +83,8 @@ addBookFormElement.addEventListener('submit', (event) => {
 
   state.data.books = [...state.data.books, newBook];
   bookStorage.insert(state.data.books);
+
+  event.target.reset();
 });
 
 // search book
@@ -87,13 +95,14 @@ searchBookFormElement.addEventListener('submit', (event) => {
   const term = formData.get('term');
 
   const oldBooks = state.data.books;
-  
+
   const newBooks = oldBooks.map((book) => {
-    const constrains = Object.values(book);
-    const isMatch = constrains.some((constrain) => {
-      if (term === '') return true;
-      if (!['string', 'number'].includes(typeof constrain)) return false;
-      return constrain.toString().toLowerCase().includes(term.toLowerCase());
+    const filterKeys = ['title', 'author', 'year'];
+
+    const isMatch = filterKeys.some((key) => {
+      console.log({ key, target: book[key] });
+      const target = book[key].toString().toLowerCase();
+      return target.includes(term.toLowerCase());
     });
 
     if (isMatch) return { ...book, isHide: false };
