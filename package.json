@@ -1,0 +1,25 @@
+{
+  "name": "bookshelf-apps",
+  "version": "1.0.0",
+  "description": "Aplikasi web pengolahan buku",
+  "main": "index.js",
+  "scripts": {
+    "tw:watch": "tailwindcss -i styles/tailwindcss.css -o styles/main.css --watch",
+    "tw:build": "tailwindcss -i styles/tailwindcss.css -o styles/main.css --minify"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/edwintantawi/dicoding__bmfep.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/edwintantawi/dicoding__bmfep/issues"
+  },
+  "homepage": "https://github.com/edwintantawi/dicoding__bmfep#readme",
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.2",
+    "tailwindcss": "^3.1.3"
+  }
+}
