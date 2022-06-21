@@ -36,11 +36,12 @@ acceptButton.addEventListener('click', (event) => {
   dialogElement.close();
 });
 
+// event listener for decline button in alert dialog
 declineButton.addEventListener('click', () => {
   dialogElement.close();
 });
 
-// event listener for delete book
+// event listener for delete book to open alert dialog
 const handleDeleteBook = (event) => {
   acceptButton.setAttribute('value', event.target.value);
   dialogElement.show();
@@ -100,7 +101,6 @@ searchBookFormElement.addEventListener('submit', (event) => {
     const filterKeys = ['title', 'author', 'year'];
 
     const isMatch = filterKeys.some((key) => {
-      console.log({ key, target: book[key] });
       const target = book[key].toString().toLowerCase();
       return target.includes(term.toLowerCase());
     });
