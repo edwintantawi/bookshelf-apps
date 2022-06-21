@@ -1,6 +1,6 @@
 const createBookTemplate = (
   { id, title, author, year, isComplete },
-  { onDelete, onChange }
+  { onDelete, onChange, onEdit }
 ) => {
   const buttonBaseClass = [
     'text-white',
@@ -74,7 +74,17 @@ const createBookTemplate = (
     changeStatusButton.innerText = 'Complete';
   }
 
-  footer.append(deleteButton, changeStatusButton);
+  const editButton = document.createElement('button');
+  editButton.innerText = 'Edit';
+  editButton.classList.add(
+    ...buttonBaseClass,
+    'bg-purple-600',
+    'hover:bg-purple-600/75'
+  );
+  editButton.setAttribute('value', id);
+  editButton.addEventListener('click', onEdit);
+
+  footer.append(changeStatusButton, editButton, deleteButton);
   article.append(articleHeading, articleAuthor, articleTime, footer);
   list.appendChild(article);
   return list;

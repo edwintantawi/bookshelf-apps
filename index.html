@@ -8,6 +8,7 @@
     <title>Bookshelf Apps</title>
   </head>
   <body>
+    <!-- delete book alert dialog -->
     <dialog
       id="dialog:alert"
       class="w-full h-full p-0 z-50 bg-transparent fixed"
@@ -35,6 +36,85 @@
               Yes, Delete
             </button>
           </footer>
+        </section>
+      </div>
+    </dialog>
+
+    <!-- Edit book dialog form -->
+
+    <dialog
+      open
+      id="dialog:edit"
+      class="w-full h-full p-0 z-50 bg-transparent fixed"
+    >
+      <div class="bg-black/40 h-full w-full grid place-items-center">
+        <section class="bg-white p-8 rounded-lg max-w-[440px] sm:w-[540px] m-4">
+          <h2 class="font-bold text-xl mb-2">Edit book</h2>
+          <form id="form:edit" class="grid space-y-8 mt-4">
+            <div class="grid grid-cols-1 gap-4">
+              <label class="block">
+                <span class="text-gray-700">Title :</span>
+                <input
+                  type="text"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-blue-200"
+                  placeholder="Eloquent JavaScript"
+                  name="title"
+                  required
+                />
+              </label>
+
+              <label class="block">
+                <span class="text-gray-700">Author :</span>
+                <input
+                  type="text"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-blue-200"
+                  placeholder="Marijn Haverbeke"
+                  name="author"
+                  required
+                />
+              </label>
+
+              <label class="block">
+                <span class="text-gray-700">Year :</span>
+                <input
+                  type="number"
+                  class="mt-1 block w-full rounded-md border-gray-300 focus:border-blue-200"
+                  placeholder="2018"
+                  name="year"
+                  required
+                />
+              </label>
+
+              <div class="block">
+                <div class="mt-2">
+                  <div>
+                    <label class="inline-flex items-center">
+                      <input
+                        type="checkbox"
+                        name="isComplete"
+                        class="rounded border-gray-300 text-blue-400 shadow-sm focus:border-blue-200"
+                      />
+                      <span class="ml-2">Already complete read this book</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <footer class="flex justify-end gap-2 flex-col sm:flex-row">
+              <button
+                id="dialog:edit:decline"
+                class="py-2 px-6 rounded-md hover:bg-gray-100"
+              >
+                No, Cancel
+              </button>
+              <button
+                id="dialog:edit:accept"
+                class="py-2 px-6 rounded-md bg-blue-500 hover:bg-blue-500/80 text-white font-bold"
+              >
+                Yes, Update book
+              </button>
+            </footer>
+          </form>
         </section>
       </div>
     </dialog>

@@ -20,49 +20,6 @@ const dialogElement = document.getElementById('dialog:alert');
 const acceptButton = document.getElementById('dialog:alert:accept');
 const declineButton = document.getElementById('dialog:alert:decline');
 
-// delete book when user accept from alert dialog
-acceptButton.addEventListener('click', (event) => {
-  const id = event.target.value;
-  const oldBooks = state.data.books;
-  const newBooks = oldBooks
-    .filter((book) => book.id !== Number(id))
-    .map((book) => new Book(book));
-
-  console.log({ oldBooks, newBooks });
-
-  bookStorage.insert(newBooks);
-  state.data.books = newBooks;
-
-  dialogElement.close();
-});
-
-// event listener for decline button in alert dialog
-declineButton.addEventListener('click', () => {
-  dialogElement.close();
-});
-
-// event listener for delete book to open alert dialog
-const handleDeleteBook = (event) => {
-  acceptButton.setAttribute('value', event.target.value);
-  dialogElement.show();
-};
-
-// event listener for toggle book status
-const handleChangeBookStatus = (event) => {
-  const id = event.target.value;
-
-  const oldBooks = state.data.books;
-  const newBooks = oldBooks.map((book) => {
-    if (book.id === Number(id)) {
-      return new Book({ ...book, isComplete: !book.isComplete });
-    }
-    return new Book(book);
-  });
-
-  bookStorage.insert(newBooks);
-  state.data.books = newBooks;
-};
-
 // load books from storage
 document.addEventListener('DOMContentLoaded', () => {
   state.data.books = bookStorage.select();
@@ -112,6 +69,52 @@ searchBookFormElement.addEventListener('submit', (event) => {
   state.data.books = newBooks;
 });
 
+// event listener for delete book to open alert dialog
+const handleDeleteBook = (event) => {
+  acceptButton.setAttribute('value', event.target.value);
+  dialogElement.show();
+};
+
+// delete book when user accept from alert dialog
+acceptButton.addEventListener('click', (event) => {
+  const id = event.target.value;
+  const oldBooks = state.data.books;
+  const newBooks = oldBooks
+    .filter((book) => book.id !== Number(id))
+    .map((book) => new Book(book));
+
+  console.log({ oldBooks, newBooks });
+
+  bookStorage.insert(newBooks);
+  state.data.books = newBooks;
+
+  dialogElement.close();
+});
+
+// event listener for decline button in alert dialog
+declineButton.addEventListener('click', () => {
+  dialogElement.close();
+});
+
+// event listener for toggle book status
+const handleChangeBookStatus = (event) => {
+  const id = event.target.value;
+
+  const oldBooks = state.data.books;
+  const newBooks = oldBooks.map((book) => {
+    if (book.id === Number(id)) {
+      return new Book({ ...book, isComplete: !book.isComplete });
+    }
+    return new Book(book);
+  });
+
+  bookStorage.insert(newBooks);
+  state.data.books = newBooks;
+};
+
+//event listener for edit book
+const handleEditBook = (event) => {};
+
 // render books to DOM
 document.addEventListener(RENDER_BOOKS_EVENT, () => {
   const incompleteListElement = document.getElementById('book-list:incomplete');
@@ -126,6 +129,7 @@ document.addEventListener(RENDER_BOOKS_EVENT, () => {
     const bookElement = createBookTemplate(book, {
       onDelete: handleDeleteBook,
       onChange: handleChangeBookStatus,
+      onEdit: handleEditBook,
     });
 
     if (book.isComplete) completeListElement.appendChild(bookElement);
