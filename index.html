@@ -10,7 +10,7 @@
   <body>
     <!-- delete book alert dialog -->
     <dialog
-      id="dialog:alert"
+      id="dialog:delete"
       class="w-full h-full p-0 z-50 bg-transparent fixed"
     >
       <div class="bg-black/40 h-full w-full grid place-items-center">
@@ -22,36 +22,33 @@
             Deleted books cannot be returned, make sure you are sure before
             delete.
           </p>
-          <footer class="mt-6 flex justify-end gap-2">
-            <button
-              id="dialog:alert:decline"
-              class="py-2 px-6 rounded-md hover:bg-gray-100"
-            >
+          <form id="form:delete" class="mt-6 flex justify-end gap-2">
+            <input type="hidden" name="id" />
+            <button type="reset" class="py-2 px-6 rounded-md hover:bg-gray-100">
               No, Cancel
             </button>
             <button
-              id="dialog:alert:accept"
+              type="submit"
               class="py-2 px-6 rounded-md bg-red-500 hover:bg-red-500/80 text-white font-bold"
             >
               Yes, Delete
             </button>
-          </footer>
+          </form>
         </section>
       </div>
     </dialog>
 
     <!-- Edit book dialog form -->
-
     <dialog
-      open
       id="dialog:edit"
       class="w-full h-full p-0 z-50 bg-transparent fixed"
     >
       <div class="bg-black/40 h-full w-full grid place-items-center">
         <section class="bg-white p-8 rounded-lg max-w-[440px] sm:w-[540px] m-4">
           <h2 class="font-bold text-xl mb-2">Edit book</h2>
-          <form id="form:edit" class="grid space-y-8 mt-4">
+          <form id="form:edit" class="grid space-y-8 mt-6">
             <div class="grid grid-cols-1 gap-4">
+              <input type="hidden" name="id" />
               <label class="block">
                 <span class="text-gray-700">Title :</span>
                 <input
@@ -100,14 +97,17 @@
                 </div>
               </div>
             </div>
+
             <footer class="flex justify-end gap-2 flex-col sm:flex-row">
               <button
+                type="reset"
                 id="dialog:edit:decline"
                 class="py-2 px-6 rounded-md hover:bg-gray-100"
               >
                 No, Cancel
               </button>
               <button
+                type="submit"
                 id="dialog:edit:accept"
                 class="py-2 px-6 rounded-md bg-blue-500 hover:bg-blue-500/80 text-white font-bold"
               >
@@ -194,6 +194,7 @@
               </button>
             </form>
           </aside>
+
           <aside class="px-6 pb-6 border border-1 rounded-md h-min shadow-sm">
             <h2 class="text-xl font-bold text-blue-500 py-4 border-b">
               Search Book

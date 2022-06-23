@@ -16,9 +16,11 @@ const bookStorage = new LocalStorage({ key: BOOKS_STORAGE_KEY });
 const addBookFormElement = document.getElementById('form:book');
 const searchBookFormElement = document.getElementById('form:search');
 
-const dialogElement = document.getElementById('dialog:alert');
-const acceptButton = document.getElementById('dialog:alert:accept');
-const declineButton = document.getElementById('dialog:alert:decline');
+const deleteDialogElement = document.getElementById('dialog:delete');
+const formDelete = document.getElementById('form:delete');
+
+const editDialogElement = document.getElementById('dialog:edit');
+const formEdit = document.getElementById('form:edit');
 
 // load books from storage
 document.addEventListener('DOMContentLoaded', () => {
@@ -69,18 +71,44 @@ searchBookFormElement.addEventListener('submit', (event) => {
   state.data.books = newBooks;
 });
 
-// event listener for delete book to open alert dialog
-const handleDeleteBook = (event) => {
-  acceptButton.setAttribute('value', event.target.value);
-  dialogElement.show();
-};
+// event listener for reset edit form
+formEdit.addEventListener('reset', () => {
+  editDialogElement.close();
+});
 
-// delete book when user accept from alert dialog
-acceptButton.addEventListener('click', (event) => {
-  const id = event.target.value;
+// event listener for submit edit form
+formEdit.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const payload = {};
+
+  for (const key of formData.keys()) {
+    payload[key] = formData.get(key);
+  }
+
+  state.data.books = state.data.books.map((book) => {
+    if (book.id === payload.id) return new Book(payload);
+    return book;
+  });
+
+  bookStorage.insert(state.data.books);
+
+  event.target.reset();
+
+  editDialogElement.close();
+});
+
+// event listener for submit delete form
+formDelete.addEventListener('submit', (event) => {
+  event.preventDefault();
+
+  const formData = new FormData(event.target);
+  const id = formData.get('id');
+
   const oldBooks = state.data.books;
   const newBooks = oldBooks
-    .filter((book) => book.id !== Number(id))
+    .filter((book) => book.id !== id)
     .map((book) => new Book(book));
 
   console.log({ oldBooks, newBooks });
@@ -88,13 +116,21 @@ acceptButton.addEventListener('click', (event) => {
   bookStorage.insert(newBooks);
   state.data.books = newBooks;
 
-  dialogElement.close();
+  deleteDialogElement.close();
 });
 
-// event listener for decline button in alert dialog
-declineButton.addEventListener('click', () => {
-  dialogElement.close();
+// event listener for reset delete form
+formDelete.addEventListener('reset', () => {
+  deleteDialogElement.close();
 });
+
+// event listener for delete book to open alert dialog
+const handleDeleteBook = (event) => {
+  const id = event.target.value;
+
+  formDelete.querySelector('[name="id"]').value = id;
+  deleteDialogElement.show();
+};
 
 // event listener for toggle book status
 const handleChangeBookStatus = (event) => {
@@ -102,7 +138,7 @@ const handleChangeBookStatus = (event) => {
 
   const oldBooks = state.data.books;
   const newBooks = oldBooks.map((book) => {
-    if (book.id === Number(id)) {
+    if (book.id === id) {
       return new Book({ ...book, isComplete: !book.isComplete });
     }
     return new Book(book);
@@ -113,7 +149,21 @@ const handleChangeBookStatus = (event) => {
 };
 
 //event listener for edit book
-const handleEditBook = (event) => {};
+const handleEditBook = (event) => {
+  const id = event.target.value;
+
+  const book = state.data.books.find((book) => book.id === id);
+
+  if (!book) return;
+
+  formEdit.querySelector('[name="id"]').value = book.id;
+  formEdit.querySelector('[name="title"]').value = book.title;
+  formEdit.querySelector('[name="author"]').value = book.author;
+  formEdit.querySelector('[name="year"]').value = book.year;
+  formEdit.querySelector('[name="isComplete"]').checked = book.isComplete;
+
+  editDialogElement.show();
+};
 
 // render books to DOM
 document.addEventListener(RENDER_BOOKS_EVENT, () => {

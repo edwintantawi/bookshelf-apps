@@ -1,6 +1,6 @@
 class Book {
   constructor({ id, title, author, year, isComplete = false }) {
-    this.id = id;
+    this.id = String(id);
     this.title = title;
     this.author = author;
     this.year = Number(year);
