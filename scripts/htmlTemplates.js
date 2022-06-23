@@ -8,6 +8,8 @@ const createBookTemplate = (
     'px-3',
     'rounded-md',
     'font-bold',
+    'text-sm',
+    'lg:text-base',
   ];
 
   const list = document.createElement('li');
