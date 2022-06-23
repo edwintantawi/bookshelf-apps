@@ -110,9 +110,7 @@ formDelete.addEventListener('submit', (event) => {
   const newBooks = oldBooks
     .filter((book) => book.id !== id)
     .map((book) => new Book(book));
-
-  console.log({ oldBooks, newBooks });
-
+  
   bookStorage.insert(newBooks);
   state.data.books = newBooks;
 
