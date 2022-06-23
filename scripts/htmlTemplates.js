@@ -18,23 +18,34 @@ const createBookTemplate = (
   article.classList.add(
     'border',
     'border-1',
-    'px-5',
-    'py-3',
+    'p-4',
+    'md:px-5',
+    'md:py-3',
     'rounded-md',
     'hover:border-gray-400/60',
     'text-gray-600'
   );
 
   const articleHeading = document.createElement('h3');
-  articleHeading.classList.add('text-xl', 'font-bold');
+  articleHeading.classList.add('text-xl', 'font-bold', 'mb-1');
   articleHeading.innerText = title;
 
-  const articleAuthor = document.createElement('address');
-  articleAuthor.innerText = author;
+  const authorTitle = document.createElement('span');
+  authorTitle.classList.add('text-gray-400', 'italic');
+  authorTitle.innerText = 'Author: ';
 
-  const articleTime = document.createElement('time');
-  articleTime.innerText = year;
-  articleTime.setAttribute('datetime', year);
+  const articleAuthor = document.createElement('address');
+  articleAuthor.classList.add('text-sm', 'md:text-base');
+  articleAuthor.append(authorTitle, author);
+
+  const timeTitle = document.createElement('span');
+  timeTitle.classList.add('text-gray-400', 'italic');
+  timeTitle.innerText = 'Year: ';
+
+  const articleYear = document.createElement('time');
+  articleYear.classList.add('text-sm', 'md:text-base');
+  articleYear.setAttribute('datetime', year);
+  articleYear.append(timeTitle, year);
 
   const footer = document.createElement('footer');
   footer.classList.add(
@@ -87,7 +98,7 @@ const createBookTemplate = (
   editButton.addEventListener('click', onEdit);
 
   footer.append(changeStatusButton, editButton, deleteButton);
-  article.append(articleHeading, articleAuthor, articleTime, footer);
+  article.append(articleHeading, articleAuthor, articleYear, footer);
   list.appendChild(article);
   return list;
 };
